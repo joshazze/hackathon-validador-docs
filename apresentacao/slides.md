@@ -39,20 +39,25 @@ style: |
     width: 100%;
     font-size: 26px;
     margin: 8px 0;
+    background: transparent;
   }
+  tr, tbody, thead { background: transparent !important; }
+  tr:nth-child(even), tr:nth-child(odd) { background: transparent !important; }
   th, td {
     padding: 14px 18px;
     border-bottom: 1px solid #30363d;
     text-align: left;
     line-height: 1.4;
+    background: transparent !important;
+    color: #e6edf3;
   }
   th {
-    color: #c9d1d9;
-    font-weight: 600;
+    color: #79c0ff !important;
+    font-weight: 700;
     font-size: 18px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    border-bottom: 2px solid #444c56;
+    border-bottom: 2px solid #58a6ff;
   }
   ul, ol { padding-left: 32px; margin: 12px 0; }
   li { margin: 10px 0; }
