@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Parlamento de Agentes — Validação de Documentos</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --panel: #161b22;
+      --panel-2: #1f262e;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --ok: #3fb950;
+      --warn: #d29922;
+      --bad: #f85149;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+    h1 {
+      font-size: 22px; font-weight: 600; margin: 0 0 4px;
+      letter-spacing: -0.01em;
+    }
+    .subtitle { color: var(--muted); margin-bottom: 28px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    input[type="text"], input[type="date"] {
+      width: 100%;
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 9px 11px;
+      font-size: 14px;
+      font-family: inherit;
+    }
+    input:focus { outline: none; border-color: var(--accent); }
+
+    .dropzone {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 36px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: var(--panel-2);
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--accent);
+      background: rgba(88, 166, 255, 0.06);
+    }
+    .dropzone strong { display: block; font-size: 15px; margin-bottom: 4px; }
+    .dropzone span { color: var(--muted); font-size: 13px; }
+
+    button.submit {
+      width: 100%;
+      background: var(--accent);
+      color: #0d1117;
+      border: 0;
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    button.submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .preview {
+      margin-top: 12px;
+      display: none;
+    }
+    .preview img {
+      max-width: 100%;
+      max-height: 220px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .preview .file-name {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      word-break: break-all;
+    }
+
+    .verdict {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 22px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: -0.01em;
+    }
+    .verdict.APROVADO { background: rgba(63, 185, 80, 0.10); border-color: var(--ok); color: var(--ok); }
+    .verdict.REVISAR  { background: rgba(210, 153, 34, 0.10); border-color: var(--warn); color: var(--warn); }
+    .verdict.REJEITADO{ background: rgba(248, 81, 73, 0.10); border-color: var(--bad); color: var(--bad); }
+    .verdict .score {
+      margin-left: auto;
+      font-variant-numeric: tabular-nums;
+      font-size: 18px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .card .value {
+      font-size: 20px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .card.good .value { color: var(--ok); }
+    .card.mid .value  { color: var(--warn); }
+    .card.bad .value  { color: var(--bad); }
+    .bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .bar > span {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+    }
+    .card.good .bar > span { background: var(--ok); }
+    .card.mid .bar > span  { background: var(--warn); }
+    .card.bad .bar > span  { background: var(--bad); }
+
+    h3 { font-size: 14px; font-weight: 600; margin: 18px 0 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    ul.motivos { margin: 0; padding-left: 20px; }
+    ul.motivos li { margin-bottom: 4px; }
+
+    pre.json {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      overflow-x: auto;
+      font-size: 12px;
+      color: var(--muted);
+      max-height: 320px;
+    }
+    .timings {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .timings span { margin-right: 14px; }
+    .timings b { color: var(--text); font-variant-numeric: tabular-nums; font-weight: 500; }
+
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hidden { display: none; }
+
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Parlamento de Agentes</h1>
+    <p class="subtitle">Validação inteligente de RG / CNH no cadastro de plano de saúde</p>
+
+    <form id="form" class="panel">
+      <div class="grid" style="margin-bottom:14px">
+        <div>
+          <label for="nome">Nome completo (cadastro)</label>
+          <input id="nome" name="nome_completo" type="text" placeholder="Como digitado no cadastro" required />
+        </div>
+        <div>
+          <label for="nasc">Data de nascimento (cadastro)</label>
+          <input id="nasc" name="data_nascimento" type="date" required />
+        </div>
+      </div>
+
+      <div id="dropzone" class="dropzone">
+        <strong>Arraste o documento aqui</strong>
+        <span>ou clique para escolher — jpg, png, pdf</span>
+        <input id="file" name="documento" type="file" accept="image/*,application/pdf" hidden />
+      </div>
+
+      <div id="preview" class="preview">
+        <img id="preview-img" />
+        <div id="preview-name" class="file-name"></div>
+      </div>
+
+      <button id="submit" type="submit" class="submit" disabled>Validar documento</button>
+    </form>
+
+    <div id="loading" class="panel hidden">
+      <span class="spinner"></span>Convocando o parlamento...
+    </div>
+
+    <div id="result" class="hidden">
+      <div id="verdict" class="verdict"></div>
+
+      <div class="panel">
+        <h3 style="margin-top:0">Dimensões avaliadas</h3>
+        <div id="cards" class="cards"></div>
+        <div id="timings" class="timings"></div>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0">Motivos</h3>
+        <ul id="motivos" class="motivos"></ul>
+      </div>
+
+      <div class="panel">
+        <h3 style="margin-top:0">Resposta completa do parlamento (debug)</h3>
+        <pre id="raw" class="json"></pre>
+      </div>
+    </div>
+  </div>
+
+<script>
+const form = document.getElementById('form');
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('file');
+const preview = document.getElementById('preview');
+const previewImg = document.getElementById('preview-img');
+const previewName = document.getElementById('preview-name');
+const submitBtn = document.getElementById('submit');
+const loading = document.getElementById('loading');
+const result = document.getElementById('result');
+
+dropzone.addEventListener('click', () => fileInput.click());
+['dragenter','dragover'].forEach(e =>
+  dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.add('dragover'); })
+);
+['dragleave','drop'].forEach(e =>
+  dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.remove('dragover'); })
+);
+dropzone.addEventListener('drop', ev => {
+  if (ev.dataTransfer.files.length) {
+    fileInput.files = ev.dataTransfer.files;
+    onFile();
+  }
+});
+fileInput.addEventListener('change', onFile);
+
+function onFile() {
+  const f = fileInput.files[0];
+  if (!f) return;
+  previewName.textContent = f.name;
+  if (f.type.startsWith('image/')) {
+    const r = new FileReader();
+    r.onload = e => { previewImg.src = e.target.result; preview.style.display = 'block'; };
+    r.readAsDataURL(f);
+  } else {
+    previewImg.src = '';
+    preview.style.display = 'block';
+  }
+  submitBtn.disabled = false;
+}
+
+function classFor(score) {
+  if (score >= 0.75) return 'good';
+  if (score >= 0.50) return 'mid';
+  return 'bad';
+}
+
+function renderCards(scores) {
+  const map = {
+    legibilidade: 'Legibilidade',
+    extracao: 'Extração',
+    validacao: 'Validação',
+    consistencia: 'Consistência',
+    anomalia_invertida: 'Ausência de anomalia',
+  };
+  return Object.entries(scores).map(([k, v]) => {
+    const cls = classFor(v);
+    const pct = Math.round(v * 100);
+    return `
+      <div class="card ${cls}">
+        <div class="label">${map[k] || k}</div>
+        <div class="value">${pct}%</div>
+        <div class="bar"><span style="width:${pct}%"></span></div>
+      </div>`;
+  }).join('');
+}
+
+form.addEventListener('submit', async ev => {
+  ev.preventDefault();
+  result.classList.add('hidden');
+  loading.classList.remove('hidden');
+  submitBtn.disabled = true;
+
+  const fd = new FormData(form);
+  try {
+    const r = await fetch('/validate', { method: 'POST', body: fd });
+    const data = await r.json();
+    renderResult(data);
+  } catch (e) {
+    alert('Erro: ' + e.message);
+  } finally {
+    loading.classList.add('hidden');
+    submitBtn.disabled = false;
+  }
+});
+
+function renderResult(data) {
+  const verdict = document.getElementById('verdict');
+  verdict.className = 'verdict ' + (data.veredito || 'REVISAR');
+  verdict.innerHTML = `
+    <div>${data.veredito} <span style="font-size:14px;color:var(--muted);font-weight:500">— ${data.tipo_documento}</span></div>
+    <div class="score">${data.score_final !== undefined ? (data.score_final*100).toFixed(0) + '%' : ''}</div>
+  `;
+
+  document.getElementById('cards').innerHTML = data.scores ? renderCards(data.scores) : '<p style="color:var(--muted)">Sem scores — curto-circuito na fase 1.</p>';
+
+  const t = data.tempos_ms || {};
+  const timings = Object.entries(t).map(([k,v]) => `<span>${k}: <b>${v}ms</b></span>`).join('');
+  document.getElementById('timings').innerHTML = timings;
+
+  document.getElementById('motivos').innerHTML = (data.motivos || []).map(m => `<li>${m}</li>`).join('');
+  document.getElementById('raw').textContent = JSON.stringify(data, null, 2);
+
+  result.classList.remove('hidden');
+  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>
