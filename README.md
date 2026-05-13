@@ -121,10 +121,37 @@ Os pesos vivem em `parliament/rapporteur.py` — calibráveis sem mexer em promp
 │   └── rapporteur.py            # relator final
 ├── templates/
 │   └── index.html               # drag-and-drop + dashboard
-├── exemplos/                    # documentos espécimen para teste
-├── slides.pdf                   # apresentação 15min
+├── exemplos/                    # 3 documentos sintéticos pra demo
+│   ├── 01-rg-valido.jpg
+│   ├── 02-cnh-borrado.jpg
+│   └── 03-nao-doc.jpg
+├── scripts/
+│   └── gerar_exemplos.py        # regenera exemplos sintéticos
+├── slides.md                    # fonte da apresentação (Marp)
+├── slides.pdf                   # apresentação 15min (gerada)
 ├── requirements.txt
 └── .env.example
+```
+
+## Demo
+
+Os 3 exemplos em `exemplos/` cobrem os 3 vereditos possíveis:
+
+| Arquivo | Cadastro esperado | Veredito |
+|---|---|---|
+| `01-rg-valido.jpg` | Nome: ANTONIA SILVA SANTOS, Nasc: 2002-03-15 | APROVADO |
+| `02-cnh-borrado.jpg` | Nome: MARCOS PEREIRA OLIVEIRA, Nasc: 1995-07-22 | REVISAR (legibilidade ruim) |
+| `03-nao-doc.jpg` | qualquer | REJEITADO (curto-circuito ILEGIVEL) |
+
+São imagens **sintéticas** geradas por código (`scripts/gerar_exemplos.py`) — sem dados pessoais reais.
+
+## Slides
+
+Gerados a partir de `slides.md` via Marp:
+
+```bash
+npm i -g @marp-team/marp-cli
+marp slides.md --pdf
 ```
 
 1 agente = 1 arquivo. Cada arquivo é justificado de forma independente.
