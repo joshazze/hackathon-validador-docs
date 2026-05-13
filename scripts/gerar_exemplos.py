@@ -15,7 +15,7 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-OUT = Path(__file__).parent.parent / "exemplos"
+OUT = Path(__file__).parent.parent / "apresentacao" / "exemplos"
 OUT.mkdir(parents=True, exist_ok=True)
 
 

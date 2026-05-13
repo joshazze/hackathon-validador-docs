@@ -107,10 +107,12 @@ Os pesos vivem em `parliament/rapporteur.py` — calibráveis sem mexer em promp
 
 ## Estrutura de arquivos
 
+A raiz contém **o modelo (código)**. A pasta `apresentacao/` contém **o material de entrega** (slides + exemplos pra demo).
+
 ```
 .
 ├── app.py                       # Flask + orquestrador
-├── parliament/
+├── parliament/                  # MODELO — agentes
 │   ├── _client.py               # cliente Anthropic + utils de imagem
 │   ├── classifier.py            # agente 1 (Haiku)
 │   ├── extractor.py             # agente 2 (Sonnet)
@@ -121,21 +123,22 @@ Os pesos vivem em `parliament/rapporteur.py` — calibráveis sem mexer em promp
 │   └── rapporteur.py            # relator final
 ├── templates/
 │   └── index.html               # drag-and-drop + dashboard
-├── exemplos/                    # 3 documentos sintéticos pra demo
-│   ├── 01-rg-valido.jpg
-│   ├── 02-cnh-borrado.jpg
-│   └── 03-nao-doc.jpg
 ├── scripts/
-│   └── gerar_exemplos.py        # regenera exemplos sintéticos
-├── slides.md                    # fonte da apresentação (Marp)
-├── slides.pdf                   # apresentação 15min (gerada)
+│   └── gerar_exemplos.py        # regenera os exemplos da apresentação
+├── apresentacao/                # ENTREGA — pra banca, não é código de produção
+│   ├── slides.md                # fonte da apresentação (Marp)
+│   ├── slides.pdf               # apresentação 15min (gerada)
+│   └── exemplos/                # 3 documentos sintéticos pra demo
+│       ├── 01-rg-valido.jpg
+│       ├── 02-cnh-borrado.jpg
+│       └── 03-nao-doc.jpg
 ├── requirements.txt
 └── .env.example
 ```
 
-## Demo
+## Demo (apresentacao/exemplos)
 
-Os 3 exemplos em `exemplos/` cobrem os 3 vereditos possíveis:
+Os 3 exemplos em `apresentacao/exemplos/` cobrem os 3 vereditos possíveis:
 
 | Arquivo | Cadastro esperado | Veredito |
 |---|---|---|
@@ -147,11 +150,11 @@ São imagens **sintéticas** geradas por código (`scripts/gerar_exemplos.py`) �
 
 ## Slides
 
-Gerados a partir de `slides.md` via Marp:
+Gerados a partir de `apresentacao/slides.md` via Marp:
 
 ```bash
 npm i -g @marp-team/marp-cli
-marp slides.md --pdf
+marp apresentacao/slides.md --pdf -o apresentacao/slides.pdf
 ```
 
 1 agente = 1 arquivo. Cada arquivo é justificado de forma independente.
