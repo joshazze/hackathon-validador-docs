@@ -240,12 +240,16 @@ Três níveis, não dois: REVISAR reconhece o limite da automação.
 
 | Sugestão | Decisão | Motivo |
 |---|---|---|
-| IA decide aprovar/rejeitar | **Rejeitada** | IA é complacente. Código decide. |
-| Validar RG com regex nacional | **Rejeitada** | RG não tem padrão nacional |
-| Tesseract para OCR local | **Adiada** | Em 2h não dá pra calibrar. Limitação anotada. |
-| Confiança declarada pelo modelo | **Ignorada** | LLM chuta 0.95. Score em código. |
+| IA decide aprovar/rejeitar | Rejeitada | IA é complacente. Código decide. |
+| Validar RG com regex nacional | Rejeitada | RG não tem padrão nacional |
+| Tesseract para OCR local | Adiada | Em 2h não dá pra calibrar |
+| Confiança declarada pelo modelo | Ignorada | LLM chuta 0.95. Score em código |
 
-# Onde concordei
+---
+
+## Reflexão crítica
+
+# Onde concordei com a IA
 
 - **Cross-check com cadastro digitado** — pega fraude grosseira
 - **Pré-processar PDF para imagem** antes do multimodal
