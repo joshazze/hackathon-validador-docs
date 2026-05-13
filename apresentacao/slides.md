@@ -8,69 +8,101 @@ color: "#e6edf3"
 style: |
   section {
     font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
-    padding: 56px 72px;
+    padding: 64px 88px;
     background: #0d1117;
     color: #e6edf3;
-    font-size: 22px;
-    line-height: 1.45;
+    font-size: 30px;
+    line-height: 1.55;
   }
   h1 {
-    color: #e6edf3;
-    font-size: 44px;
-    font-weight: 600;
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: 700;
     letter-spacing: -0.02em;
-    margin-bottom: 6px;
+    margin: 0 0 8px;
+    line-height: 1.15;
   }
   h2 {
-    color: #58a6ff;
-    font-size: 18px;
+    color: #79c0ff;
+    font-size: 22px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin: 0 0 24px;
+    letter-spacing: 0.10em;
+    margin: 0 0 32px;
   }
-  h3 { color: #e6edf3; font-size: 24px; margin-top: 18px; }
-  strong { color: #58a6ff; }
-  em { color: #d29922; font-style: normal; font-weight: 600; }
+  h3 { color: #e6edf3; font-size: 34px; margin: 24px 0 12px; font-weight: 600; }
+  p { margin: 14px 0; }
+  strong { color: #79c0ff; font-weight: 700; }
+  em { color: #f0b429; font-style: normal; font-weight: 700; }
   table {
     border-collapse: collapse;
     width: 100%;
-    font-size: 18px;
+    font-size: 26px;
+    margin: 8px 0;
   }
   th, td {
-    padding: 8px 14px;
+    padding: 14px 18px;
     border-bottom: 1px solid #30363d;
     text-align: left;
+    line-height: 1.4;
   }
-  th { color: #8b949e; font-weight: 500; font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; }
-  ul, ol { padding-left: 24px; }
-  li { margin: 6px 0; }
+  th {
+    color: #c9d1d9;
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid #444c56;
+  }
+  ul, ol { padding-left: 32px; margin: 12px 0; }
+  li { margin: 10px 0; }
   code {
     background: #161b22;
-    color: #58a6ff;
-    padding: 1px 6px;
-    border-radius: 4px;
-    font-size: 18px;
+    color: #79c0ff;
+    padding: 2px 10px;
+    border-radius: 5px;
+    font-size: 26px;
+    font-weight: 600;
+  }
+  pre {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 18px 22px;
+    font-size: 22px;
+    line-height: 1.5;
+    overflow: hidden;
+  }
+  pre code {
+    background: transparent;
+    padding: 0;
+    font-size: 22px;
+    color: #c9d1d9;
+    font-weight: 400;
   }
   blockquote {
-    border-left: 3px solid #58a6ff;
-    padding: 4px 16px;
-    margin: 18px 0;
-    color: #c9d1d9;
+    border-left: 4px solid #58a6ff;
+    padding: 14px 22px;
+    margin: 24px 0;
+    color: #e6edf3;
     background: #161b22;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 30px;
+    font-style: italic;
   }
-  .ok { color: #3fb950; font-weight: 600; }
-  .warn { color: #d29922; font-weight: 600; }
-  .bad { color: #f85149; font-weight: 600; }
+  .ok   { color: #56d364; font-weight: 700; }
+  .warn { color: #f0b429; font-weight: 700; }
+  .bad  { color: #ff7b72; font-weight: 700; }
   section.title {
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
-  section.title h1 { font-size: 56px; margin-bottom: 16px; }
-  section.title h2 { color: #8b949e; text-transform: none; letter-spacing: 0; font-size: 22px; font-weight: 400; }
-  footer { color: #6e7681; font-size: 14px; }
+  section.title h1 { font-size: 76px; margin-bottom: 24px; line-height: 1.1; }
+  section.title h2 { color: #c9d1d9; text-transform: none; letter-spacing: 0; font-size: 32px; font-weight: 400; }
+  section.title p { font-size: 26px; color: #8b949e; }
+  footer { color: #6e7681; font-size: 18px; }
+  section::after { font-size: 16px; color: #6e7681; }
 ---
 
 <!-- _class: title -->
@@ -251,10 +283,9 @@ Três níveis, não dois: REVISAR reconhece o limite da automação.
 
 # Obrigada!
 
-## Código aberto
-
-`github.com/joshazze/hackathon-validador-docs`
+## Perguntas?
 
 <br>
 
-**Antonia Silva Santos** — Hackathon Grupo Fácil
+**Antonia Silva Santos**
+Hackathon Grupo Fácil — Programa de Estágio IA
